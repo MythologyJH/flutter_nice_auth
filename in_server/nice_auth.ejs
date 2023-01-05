@@ -1,0 +1,51 @@
+<html>
+<head>
+	<title>본인 인증 서비스</title>
+	
+	<script language='javascript'>
+	  window.name ="Parent_window";
+    // 반환할 링크를 담아둔다.
+		var redirect = '<%=redirect%>'
+
+      window.onload = function() {
+		  document.form_chk.action = "https://nice.checkplus.co.kr/CheckPlusSafeModel/checkplus.cb";
+
+      // 타입에 따른 여는 형식 변경
+		  if("<%=type%>" == 'web') {
+        // Ifame
+		  	window.open('', 'nauth', 'width=500, height=550, top=100, left=100, fullscreen=no, menubar=no, status=no, toolbar=no, titlebar=yes, location=no, scrollbar=no');
+  
+		  	document.form_chk.target = "nauth";
+		  } else {
+		  	window.open('', '_self', 'width=500, height=550, top=100, left=100, fullscreen=no, menubar=no, status=no, toolbar=no, titlebar=yes, location=no, scrollbar=no');
+		  
+		    document.form_chk.target = "_self";
+		  }
+
+		  document.form_chk.submit();
+		}
+
+		function phoneCallBack(name, phoneNumber) {
+			window.opener.postMessage({
+          'result': name == null ? false : true,
+          'name': name,
+          'phoneNumber': phoneNumber
+        }, redirect);
+  
+			window.close();
+		}
+
+		function onCancel() {
+			window.opener.postMessage({
+				'result': 'cancel'
+			}, redirect);
+		}
+	</script>
+</head>
+<body>
+	<form name="form_chk" method="post">
+		<input type="hidden" name="m" value="checkplusService">		
+		<input type="hidden" name="EncodeData" value="<%=sEncData%>">
+	</form>
+</body>
+</html>
