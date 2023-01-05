@@ -1,0 +1,33 @@
+<html>
+<head>
+    <title>사용자 인증 결과</title>
+</head>
+<body>
+    <script>
+      window.onload = function() {
+        // 반환 타입 설정
+        var type = '<%=type%>'
+        var name = '<%=name%>';
+        var phoneNumber = '<%=mobileno%>';
+
+        // 웹이면 Ifame 값 반환
+        if(type == 'web') {
+          try {
+            window.opener.phoneCallBack(name, phoneNumber);
+
+            window.close();
+          } catch(error) {
+            console.log(error);
+        }
+        } else {
+          // 모바일은 Iframe이 아니라서 그냥 값을 던져주면 된다.
+          try {
+            onComplete.postMessage(`${name},${phoneNumber}`);
+          } catch(error) {
+            console.log(error);
+          }
+        }
+      }
+    </script>
+</body>
+</html>
